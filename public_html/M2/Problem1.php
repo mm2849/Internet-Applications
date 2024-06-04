@@ -9,8 +9,13 @@ function processArray($arr) {
     //start edits
     //note: use the $arr variable to iterate over, don't directly touch $a1-$a4
     //TODO add logic here to echo out only odd values
-    //MM2849 6-3-2024
-    echo "Priting the Odd Values Only.....";
+    //MM2849 6-3-2024 
+    echo "Priting the Odd Values Only = <br>";
+    foreach($arr as $x){
+        if($x%2==1){
+            echo "$x <br>";
+        }
+    }
     //end edits
 }
 echo "Problem 1: Odd Output<br>";
