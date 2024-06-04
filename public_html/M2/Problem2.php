@@ -12,11 +12,15 @@ function getTotal($arr) {
     //TODO do rounding stuff here (round to two decimals i.e., 0.10, 0.01, 0.00)
     //MM2849 6-3-2024
     
-    echo "Summed Values.....";
-    echo "Rounded Values.....";
+    echo "Summed Values = ";
+    print array_sum($arr);
+    
+    echo "<br>Rounded Values = ";
+    print round(array_sum($arr), 2);
     
     //end edits
-    echo "The total is $total";
+
+    echo "<br>The total is $total";
 }
 echo "Problem 2: Adding Floats<br>";
 ?>
