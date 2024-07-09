@@ -1,25 +1,30 @@
 .alert-success {
-    background-color: green
+    color: rgb(0, 255, 0);
+    font-size: 16px;
 }
 
 .alert-warning {
-    background-color: yellow;
+    color: yellow;
+    font-size: 16px;
 }
 
 .alert-danger {
-    background-color: red;
+    color: red;
+    font-size: 16px;
 }
 
 .alert-info {
-    background-color: teal;
+    color: teal;
+    font-size: 16px;
 }
 
-/*Need to Change to another styling, just used this for example purposes
-nav li{display: inline; background-color: rebeccapurple;}
-nav li a{color: hotpink}
-input{border-radius: 50%;}
+nav li{display: inline; background-color: grey; color: white}
+nav li a{color: white}
+input{border-radius: 5%;}
 body{
-    background-color: hotpink;
-    color: rgb(153, 0, 153);
+    text-align: center;
+    background-color: grey;
+    color: white;
+    font-size: 14px;
 
-}*/
+}
