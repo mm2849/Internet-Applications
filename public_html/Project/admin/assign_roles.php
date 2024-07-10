@@ -30,6 +30,8 @@ if (isset($_POST["users"]) && isset($_POST["roles"])) {
 }
 
 //get active roles
+//mm2849
+//07-10-2024
 $active_roles = [];
 $db = getDB();
 $stmt = $db->prepare("SELECT id, name, description FROM Roles WHERE is_active = 1 LIMIT 10");

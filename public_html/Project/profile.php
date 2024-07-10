@@ -1,4 +1,6 @@
 <?php
+//mm2849
+//07/10/2024
 require_once(__DIR__ . "/../../partials/nav.php");
 is_logged_in(true);
 ?>
@@ -130,17 +132,27 @@ $username = get_username();
 		    alert ("Email not filled out");
 		    return false;
 	    }
-	    let passwordVal = form.password.value;
-	    if(passwordVal==""){
+        let userVal = form.username.value;
+        if (userVal==""){
+            alert ("Username not filled out");
+            return false;
+        }
+        let currentpassVal = form.currentpassword.value;
+        if (currentpassVal==""){
+            alert ("Current Password not provided");
+            return false;
+        }
+	    pw = form.newPassword.value;
+	    if(pw==""){
 		    alert ("Password not filled out");
 		    return false;
 	    }
-	    let confirmVal = form.confirm.value;
-	    if(confirmVal==""){
-		    alert ("Password must be, minimum of 8 characters long");
+	    con = form.confirmPassword.value;
+	    if(con==""){
+		    alert ("Password must match with the above password");
 		    return false;
 	    }  
-        return true; 
+    return isValid; 
         }
         //example of using flash via javascript
         //find the flash container, create a new element, appendChild

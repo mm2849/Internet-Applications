@@ -1,12 +1,14 @@
 <?php
 //note we need to go up 1 more directory
+//mm2849
+//07-10-2024
 require(__DIR__ . "/../../../partials/nav.php");
 
 if (!has_role("Admin")) {
     flash("You don't have permission to view this page", "warning");
     die(header("Location: " . get_url("home.php")));
 }
-
+//mm2849 07-10-2024
 if (isset($_POST["name"]) && isset($_POST["description"])) {
     $name = se($_POST, "name", "", false);
     $desc = se($_POST, "description", "", false);

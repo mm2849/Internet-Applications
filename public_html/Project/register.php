@@ -1,4 +1,6 @@
 <?php
+//mm2849
+//07/10/2024
 require(__DIR__ . "/../../partials/nav.php");
 reset_session();
 ?>
@@ -22,6 +24,8 @@ reset_session();
     <input type="submit" value="Register" />
 </form>
 <script>
+        //mm2849
+        //07/10/2024
     function validate(form) {
         
         //TODO 1: implement JavaScript validation
@@ -31,7 +35,11 @@ reset_session();
 		    alert ("Email not filled out");
 		    return false;
 	    }
-
+        let userVal = form.username.value;
+        if (userVal==""){
+            alert ("Username not filled out");
+            return false;
+        }
 	    let passwordVal = form.password.value;
 	    if(passwordVal==""){
 		    alert ("Password not filled out");
@@ -42,12 +50,14 @@ reset_session();
 	    if(confirmVal==""){
 		    alert ("Password must be, minimum of 8 characters long");
 		    return false;
-	    
+        }
 
-        return true;
+    return true;
     }
 </script>
 <?php
+//mm2849
+//07/10/2024
 //TODO 2: add PHP Code
 if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm"]) && isset($_POST["username"])) {
     $email = se($_POST, "email", "", false);
@@ -62,6 +72,7 @@ if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm
     }
     //sanitize
     $email = sanitize_email($email);
+    
     //validate
     if (!is_valid_email($email)) {
         flash("Invalid email address", "danger");
@@ -94,6 +105,8 @@ if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm
         $hash = password_hash($password, PASSWORD_BCRYPT);
         $db = getDB();
         $stmt = $db->prepare("INSERT INTO Users (email, password, username) VALUES(:email, :password, :username)");
+        //mm2849
+        //07/10/2024
         try {
             $stmt->execute([":email" => $email, ":password" => $hash, ":username" => $username]);
             flash("Successfully registered!", "success");
