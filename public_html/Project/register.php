@@ -23,8 +23,26 @@ reset_session();
 </form>
 <script>
     function validate(form) {
+        
         //TODO 1: implement JavaScript validation
         //ensure it returns false for an error and true for success
+        let emailVal = form.email.value;
+	    if (emailVal==""){
+		    alert ("Email not filled out");
+		    return false;
+	    }
+
+	    let passwordVal = form.password.value;
+	    if(passwordVal==""){
+		    alert ("Password not filled out");
+		    return false;
+	    }
+
+	    let confirmVal = form.confirm.value;
+	    if(confirmVal==""){
+		    alert ("Password must be, minimum of 8 characters long");
+		    return false;
+	    
 
         return true;
     }

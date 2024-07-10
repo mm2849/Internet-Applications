@@ -125,7 +125,23 @@ $username = get_username();
         let con = form.confirmPassword.value;
         let isValid = true;
         //TODO add other client side validation....
-
+        let emailVal = form.email.value;
+	    if (emailVal==""){
+		    alert ("Email not filled out");
+		    return false;
+	    }
+	    let passwordVal = form.password.value;
+	    if(passwordVal==""){
+		    alert ("Password not filled out");
+		    return false;
+	    }
+	    let confirmVal = form.confirm.value;
+	    if(confirmVal==""){
+		    alert ("Password must be, minimum of 8 characters long");
+		    return false;
+	    }  
+        return true; 
+    }
         //example of using flash via javascript
         //find the flash container, create a new element, appendChild
         if (pw !== con) {
