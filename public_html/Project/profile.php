@@ -141,7 +141,7 @@ $username = get_username();
 		    return false;
 	    }  
         return true; 
-    }
+        }
         //example of using flash via javascript
         //find the flash container, create a new element, appendChild
         if (pw !== con) {
@@ -149,7 +149,7 @@ $username = get_username();
             isValid = false;
         }
         return isValid;
-    }
+    
 </script>
 <?php
 require_once(__DIR__ . "/../../partials/flash.php");
