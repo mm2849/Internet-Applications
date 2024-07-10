@@ -1,4 +1,6 @@
 <?php
+//mm2849
+//07-10-2024
 require(__DIR__ . "/../../partials/nav.php");
 ?>
 <form onsubmit="return validate(this)" method="POST">
@@ -15,30 +17,29 @@ require(__DIR__ . "/../../partials/nav.php");
 <script>
     function validate(form) {
         
-        //TODO 1: implement JavaScript validation
+        //TODO 1: implement JavaScript validation 
         //ensure it returns false for an error and true for success
         let emailVal = form.email.value;
 	    if (emailVal==""){
 		    alert ("Email not filled out");
 		    return false;
 	    }
-
+        let userVal = form.username.value;
+        if (userVal==""){
+            alert ("Username not filled out");
+            return false;
+        }
 	    let passwordVal = form.password.value;
 	    if(passwordVal==""){
 		    alert ("Password not filled out");
 		    return false;
-	    }
-
-	    let confirmVal = form.confirm.value;
-	    if(confirmVal==""){
-		    alert ("Password must be, minimum of 8 characters long");
-		    return false;
-	    }
-        
-        return true;
+        }  
+    return true;
     }
 </script>
 <?php
+//mm2849
+//07/10/2024
 //TODO 2: add PHP Code
 if (isset($_POST["email"]) && isset($_POST["password"])) {
     $email = se($_POST, "email", "", false);
@@ -64,6 +65,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
             flash("Invalid username");
             $hasError = true;
         }
+    
     }
     if (empty($password)) {
         flash("password must not be empty");
@@ -96,6 +98,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                         where UserRoles.user_id = :user_id and Roles.is_active = 1 and UserRoles.is_active = 1");
                             $stmt->execute([":user_id" => $user["id"]]);
                             $roles = $stmt->fetchAll(PDO::FETCH_ASSOC); //fetch all since we'll want multiple
+                        
                         } catch (Exception $e) {
                             error_log(var_export($e, true));
                         }
