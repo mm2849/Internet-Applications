@@ -3,8 +3,8 @@ require(__DIR__ . "/../../partials/nav.php");
 ?>
 <form onsubmit="return validate(this)" method="POST">
     <div>
-        <label for="email">Email</label>
-        <input type="email" name="email" required />
+        <label for="email">Email/Username</label>
+        <input type="text" name="email" required />
     </div>
     <div>
         <label for="pw">Password</label>
@@ -14,9 +14,27 @@ require(__DIR__ . "/../../partials/nav.php");
 </form>
 <script>
     function validate(form) {
+        
         //TODO 1: implement JavaScript validation
         //ensure it returns false for an error and true for success
+        let emailVal = form.email.value;
+	    if (emailVal==""){
+		    alert ("Email not filled out");
+		    return false;
+	    }
 
+	    let passwordVal = form.password.value;
+	    if(passwordVal==""){
+		    alert ("Password not filled out");
+		    return false;
+	    }
+
+	    let confirmVal = form.confirm.value;
+	    if(confirmVal==""){
+		    alert ("Password must be, minimum of 8 characters long");
+		    return false;
+	    }
+        
         return true;
     }
 </script>
@@ -32,17 +50,20 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         flash("Email must not be empty");
         $hasError = true;
     }
-    //sanitize
-    //$email = filter_var($email, FILTER_SANITIZE_EMAIL);
-    $email = sanitize_email($email);
-    //validate
-    /*if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        flash("Invalid email address");
-        $hasError = true;
-    }*/
-    if (!is_valid_email($email)) {
-        flash("Invalid email address");
-        $hasError = true;
+    if (str_contains($email, "@")) {
+        //sanitize
+        //$email = filter_var($email, FILTER_SANITIZE_EMAIL);
+        $email = sanitize_email($email);
+
+        if (!is_valid_email($email)) {
+            flash("Invalid email address");
+            $hasError = true;
+        }
+    } else {
+        if (!is_valid_username($email)) {
+            flash("Invalid username");
+            $hasError = true;
+        }
     }
     if (empty($password)) {
         flash("password must not be empty");
@@ -57,7 +78,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         //TODO 4
         $db = getDB();
         $stmt = $db->prepare("SELECT id, email, username, password from Users 
-        where email = :email");
+        where email = :email or username=:email");
         try {
             $r = $stmt->execute([":email" => $email]);
             if ($r) {
