@@ -17,21 +17,26 @@ if (isset($_POST["action"])) {
     $name = strtoupper(se($_POST, "name", "", false));
     $quote = [];
 
+
     if ($name) {
         if ($action === "search") {
             $result = search_name($name);
             error_log("Data from API" . var_export($result, true));
             if ($result) {
                 $quote = $result;
+                $quote = $quote[0];
+                $quote["is_api"] = 1;
+                error_log("Data from API" . var_export($result, true));
             }
-        } else if ($action === "create") { 
-            $_POST = [$_POST][0];
-            foreach ($_POST as $k => $v) {              
+        } else if ($action === "create") {
+            //$_POST = [$_POST][0];         
+            foreach ($_POST as $k => $v) {
                 if (!in_array($k, ["code", "code2", "name", "localname", "continent", "region", "indepyear", "surfacearea", "governmentform"])) {
+                    $_POST["is_api"] = 0;
                     unset($_POST[$k]);
                 }
                 $quote = [$_POST];
-                //$quote = [$quote];
+                $quote = $quote[0];
                 error_log("Cleaned up POST: " . var_export($quote, true));
             }
         }
@@ -39,13 +44,16 @@ if (isset($_POST["action"])) {
         flash("You must provide a name", "warning");
     }
 
+
     //Inserting Database & API Data
     $db = getDB();
     $query = "INSERT INTO `Countries` ";
     $columns = [];
     $params = [];
     //per record
-    $quote = $quote[0];
+    //$quote = $quote[0];
+    //$quote["is_api"] = 1;
+    //$_POST["is_api"] = 0;
     foreach ($quote as $k => $v) {
         array_push($columns, "`$k`");
         $params[":$k"] = $v;
@@ -59,8 +67,12 @@ if (isset($_POST["action"])) {
         $stmt->execute($params);
         flash("Inserted record" . $db->lastInsertId(), "success");
     } catch (PDOException $e) {
-        error_log("Something broke with the query" . var_export($e, true));
-        flash("An error occurred", "danger");
+        if ($e->errorInfo[1] == 1062) {
+            flash("A country with this name already exist, please try another or edit it", "warning");
+        } else {
+            error_log("Something broke with the query" . var_export($e, true));
+            flash("An error occurred", "danger");
+        }
     }
 }
 
