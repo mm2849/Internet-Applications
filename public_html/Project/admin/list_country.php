@@ -7,12 +7,80 @@ if (!has_role("Admin")) {
     die(header("Location: $BASE_PATH" . "/home.php"));
 }
 
-$query = "SELECT id, name , code, code2, name, localname, continent, region, indepyear, surfacearea, governmentform FROM `Countries` ORDER BY created DESC LIMIT 45";
+
+//Building Search Form
+$form = [
+
+    ["type" => "text", "name" => "name", "placeholder" => "Country Name", "label" => "Country Name"],
+
+    ["type" => "text", "name" => "localname", "placeholder" => "Country Local Name", "label" => "Country Local Name"],
+
+    ["type" => "text", "name" => "continent", "placeholder" => "Country Continent", "label" => "Country Continent"],
+
+    ["type" => "number", "name" => "limit", "label" => "Limit", "Value" => "10", "include_margin" => false],
+
+
+
+];
+
+
+
+
+
+$query = "SELECT id, name , code, code2, name, localname, continent, region, indepyear, surfacearea, governmentform, is_api FROM `Countries` WHERE 1=1";
+$params = [];
+if (count($_GET) > 0) {
+    $keys = array_keys($_GET);
+
+    foreach ($form as $k => $v) {
+        if (in_array($v["name"], $keys)) {
+            $form[$k]["value"] = $_GET[$v["name"]];
+        }
+    }
+    $name = se($_GET, "name", "", false);
+    if (!empty($name)) {
+        $query .= " AND name like :name";
+        $params[":name"] = "%$name%";
+    }
+    $localname = se($_GET, "localname", "", false);
+    if (!empty($localname)) {
+        $query .= " AND localname like :localname";
+        $params[":localname"] = "%$localname%";
+    }
+    $continent = se($_GET, "continent", "", false);
+    if (!empty($continent)) {
+        $query .= " AND continent like :continent";
+        $params[":continent"] = "%$continent%";
+    }
+
+
+    $sort = se($_GET, "sort", "indepyear", false);
+    if (!in_array($sort, ["name", "localname", "continent"])) {
+        $sort = "indepyear";
+    }
+    $order = se($_GET, "order", "desc", false);
+    if (!in_array($order, ["asc", "desc"])) {
+        $order = "desc";
+    }
+
+    $query .= " ORDER BY $sort $order";
+    try {
+        $limit = (int)se($_GET, "limit", "10", false);
+    } catch (Exception $e) {
+        $limit = 10;
+    }
+    if ($limit < 1 || $limit > 100) {
+        $limit = 10;
+    }
+    $query .= " LIMIT $limit";
+}
+
+
 $db = getDB();
 $stmt = $db->prepare($query);
 $results = [];
 try {
-    $stmt->execute();
+    $stmt->execute($params);
     $r = $stmt->fetchAll();
     if ($r) {
         $results = $r;
@@ -22,10 +90,21 @@ try {
     flash("Unhandled error occurred", "danger");
 }
 
-$table = ["data" => $results, "title" => "Countries", "ignored_columns" => ["id"], "edit_url"=>get_url("admin/edit_country.php")];
+$table = ["data" => $results, "title" => "Countries", "ignored_columns" => ["id"], "edit_url" => get_url("admin/edit_country.php"), "delete_url"=>get_url("admin/delete_country.php")];
 ?>
 <div class="container-fluid">
     <h3>List Countries</h3>
+    <form method="GET">
+        <div class="row">
+
+            <?php foreach ($form as $k => $v) : ?>
+                <div class="col-3">
+                    <?php render_input($v); ?>
+                </div>
+            <?php endforeach; ?>
+            <?php render_button(["text" => "Search", "type" => "submit", "text" => "Filter"]); ?>
+            <a href="?" class="btn btn-secondary">Clear</a>
+    </form>
     <?php render_table($table); ?>
 </div>
 
