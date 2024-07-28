@@ -1,4 +1,6 @@
 <?php
+//mm2849
+//07/27/2024
 //note we need to go up 1 more directory
 require(__DIR__ . "/../../../partials/nav.php");
 
@@ -25,8 +27,8 @@ $form = [
 
 
 
-
-
+//mm2849
+//07/27/2024
 $query = "SELECT id, name , code, code2, name, localname, continent, region, indepyear, surfacearea, governmentform, is_api FROM `Countries` WHERE 1=1";
 $params = [];
 if (count($_GET) > 0) {
@@ -52,7 +54,8 @@ if (count($_GET) > 0) {
         $query .= " AND continent like :continent";
         $params[":continent"] = "%$continent%";
     }
-
+//mm2849
+//07/27/2024
 
     $sort = se($_GET, "sort", "indepyear", false);
     if (!in_array($sort, ["name", "localname", "continent"])) {
@@ -75,7 +78,8 @@ if (count($_GET) > 0) {
     $query .= " LIMIT $limit";
 }
 
-
+//mm2849
+//7/27/2024
 $db = getDB();
 $stmt = $db->prepare($query);
 $results = [];
@@ -86,7 +90,7 @@ try {
         $results = $r;
     }
 } catch (PDOException $e) {
-    error_log("Error fetching stocks " . var_export($e, true));
+    error_log("Error searching for country " . var_export($e, true));
     flash("Unhandled error occurred", "danger");
 }
 

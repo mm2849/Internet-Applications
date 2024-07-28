@@ -1,4 +1,6 @@
 <?php
+//mm2849
+//07/27/2024
 //note we need to go up 1 more directory
 require(__DIR__ . "/../../../partials/nav.php");
 
@@ -43,6 +45,8 @@ if (isset($_POST["code"])) {
     try {
         $stmt = $db->prepare($query);
         $stmt->execute($params);
+        //mm2849
+        //7/27/2024
         flash("Updated record", "success");
     } catch (PDOException $e) {
         error_log("Something broke with the query" . var_export($e, true));
@@ -88,6 +92,8 @@ if ($country) {
         if (in_array($v["name"], $keys)) {
             $form[$k]["value"] = $country[$v["name"]];
         }
+        //mm2849
+        //7/27/2024
     }
 }
 // TODO Handle Manual Create Trip
