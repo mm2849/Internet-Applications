@@ -1,4 +1,6 @@
 <?php
+//mm2849
+//07/27/2024
 //note we need to go up 1 more directory
 require(__DIR__ . "/../../../partials/nav.php");
 
@@ -17,7 +19,8 @@ if (isset($_POST["action"])) {
     $name = strtoupper(se($_POST, "name", "", false));
     $quote = [];
 
-
+//mm2849
+//07/27/2024
     if ($name) {
         if ($action === "search") {
             $result = search_name($name);
@@ -67,6 +70,8 @@ if (isset($_POST["action"])) {
         $stmt->execute($params);
         flash("Inserted record" . $db->lastInsertId(), "success");
     } catch (PDOException $e) {
+        //mm2849
+        //07/27/2024
         if ($e->errorInfo[1] == 1062) {
             flash("A country with this name already exist, please try another or edit it", "warning");
         } else {
@@ -95,6 +100,8 @@ if (isset($_POST["action"])) {
             <?php render_button(["text" => "Search", "type" => "submit",]); ?>
         </form>
     </div>
+    <!-- mm2849
+        //07/27/2024 -->
     <div id="create" style="display: none;" class="tab-target">
         <form method="POST">
             <?php render_input(["type" => "text", "name" => "code", "placeholder" => "Country Code", "label" => "Country Code", "rules" => ["required" => "required"]]); ?>
