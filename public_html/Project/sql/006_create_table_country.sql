@@ -1,0 +1,17 @@
+CREATE TABLE IF NOT EXISTS `Countries` (
+    `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `code` VARCHAR(3) NOT NULL,
+    `code2` VARCHAR(3) NOT NULL,
+    `name` VARCHAR(50) NOT NULL,
+    `localname` VARCHAR(100) NOT NULL,
+    `continent` VARCHAR(50) NOT NULL,
+    `region` VARCHAR(100) NOT NULL,
+    `indepyear` SMALLINT(4) NOT NULL,
+    `surfacearea` VARCHAR(15) NOT NULL,
+    `governmentform` VARCHAR(50) NOT NULL,
+    `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `modified` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE (`name`)
+);
+
+
