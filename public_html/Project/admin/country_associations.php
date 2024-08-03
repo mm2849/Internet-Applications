@@ -1,12 +1,19 @@
 <?php
 //mm2849
+//07/27/2024
 //note we need to go up 1 more directory
-require(__DIR__ . "/../../partials/nav.php");
+require(__DIR__ . "/../../../partials/nav.php");
 
+if (!has_role("Admin")) {
+    flash("You don't have permission to view this page", "warning");
+    //die(header("Location: $BASE_PATH" . "/home.php"));
+    redirect("home.php");
+}
 
 
 //Building Search Form
 $form = [
+    ["type" => "text", "name" => "username", "placeholder" => "User Name", "label" => "User Name"],
 
     ["type" => "text", "name" => "name", "placeholder" => "Country Name", "label" => "Country Name"],
 
@@ -20,10 +27,13 @@ $form = [
 
 ];
 
-$total_records = get_total_count("`Countries` b LEFT JOIN `UserCountries` ub on b.id = ub.country_id");
+$total_records = get_total_count("`Countries` b
+JOIN `UserCountries` ub ON b.id = ub.country_id");
 
-$query = "SELECT u.username, b.id, name , code, code2, name, localname, continent, region, indepyear, surfacearea, governmentform, is_api FROM `Countries` b
-LEFT JOIN `UserCountries` ub ON b.id = ub.country_id LEFT JOIN Users u on u.id = ub.user_id WHERE 1=1";
+//mm2849
+//07/27/2024
+$query = "SELECT u.username, b.id, name , code, code2, name, localname, continent, region, indepyear, surfacearea, governmentform, is_api, user_id FROM `Countries` b
+JOIN `UserCountries` ub ON b.id = ub.country_id JOIN Users u on u.id = ub.user_id";
 $params = [];
 if (count($_GET) > 0) {
     $keys = array_keys($_GET);
@@ -34,6 +44,14 @@ if (count($_GET) > 0) {
             $form[$k]["value"] = $_GET[$v["name"]];
         }
     }
+
+    //username
+    $username = se($_GET, "username", "", false);
+    if (!empty($username)) {
+        $query .= " AND u.username like :username";
+        $params[":username"] = "%$username%";
+    }
+
     $name = se($_GET, "name", "", false);
     if (!empty($name)) {
         $query .= " AND name like :name";
@@ -49,11 +67,18 @@ if (count($_GET) > 0) {
         $query .= " AND continent like :continent";
         $params[":continent"] = "%$continent%";
     }
-  
+    //mm2849
+    //07/27/2024
+
     $sort = se($_GET, "sort", "indepyear", false);
     if (!in_array($sort, ["name", "localname", "continent"])) {
         $sort = "indepyear";
     }
+
+    if ($sort === "created" || $sort === "modified") {
+        $sort = "b." . $sort;
+    }
+
     $order = se($_GET, "order", "desc", false);
     if (!in_array($order, ["asc", "desc"])) {
         $order = "desc";
@@ -71,7 +96,8 @@ if (count($_GET) > 0) {
     $query .= " LIMIT $limit";
 }
 
-
+//mm2849
+//7/27/2024
 $db = getDB();
 $stmt = $db->prepare($query);
 $results = [];
@@ -94,7 +120,7 @@ $table = ["data" => $results, "title" => "Countries", "ignored_columns" => ["id"
 
 
 <div class="container-fluid">
-    <h3>List Countries</h3>
+    <h3>Associated Countries</h3>
     <form method="GET">
         <div class="row mb-3" style="align-items: flex-end;">
 
@@ -125,5 +151,5 @@ $table = ["data" => $results, "title" => "Countries", "ignored_columns" => ["id"
 
 
 <?php
-require_once(__DIR__ . "/../../partials/flash.php");
+require_once(__DIR__ . "/../../../partials/flash.php");
 ?>

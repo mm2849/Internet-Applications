@@ -20,3 +20,7 @@ function render_country_card($country = array()){
     include(__DIR__ . "/../partials/country_card.php");
 }
 
+function render_result_counts($result_count, $total_count){
+    include(__DIR__ . "/../partials/result_counts.php");
+}
+

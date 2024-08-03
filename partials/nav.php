@@ -33,7 +33,7 @@ session_start();
 <script src="<?php echo get_url('helpers.js'); ?>"></script>
 <nav class="navbar navbar-expand-lg bg-body-tertiary"> <!--tertiary -->
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Country Info & Wish List</a>
+        <a class="navbar-brand" href="#">Country List & Buying</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -42,6 +42,7 @@ session_start();
                 <?php if (is_logged_in()) : ?>
                     <li class="nav-item"><a class="nav-link" href="<?php echo get_url('home.php'); ?>">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?php echo get_url('profile.php'); ?>">Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo get_url('available_countries.php'); ?>">Available Countries</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?php echo get_url('countries.php'); ?>">Purchase Countries</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?php echo get_url('my_countries.php'); ?>">My Countries</a></li>
                 <?php endif; ?>
@@ -69,6 +70,7 @@ session_start();
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="<?php echo get_url('admin/create_trip.php'); ?>">Search & Create Country</a></li>
                             <li><a class="dropdown-item" href="<?php echo get_url('admin/list_country.php'); ?>">List Country</a></li>
+                            <li><a class="dropdown-item" href="<?php echo get_url('admin/country_associations.php'); ?>">Country Association</a></li>
                             
                         </ul>
                     </li>

@@ -6,8 +6,13 @@ if (!isset($country)) {
 ?>
 <?php if (isset($country)) : ?>
     <div class="card mx-auto" style="width: 18rem;">
+        <?php if (isset($country["username"])) : ?>
+            <div class="card-header">
+                Owned By: <?php se($country, "username", "N/A"); ?>
+            </div>
+        <?php endif; ?>
         <div class="card-body">
-            <h5 class="card-title"><?php se($country, "name", "Unknown"); ?> (<?php se($country, "id","Unknown"); ?>)</h5>
+            <h5 class="card-title"><?php se($country, "name", "Unknown"); ?> (<?php se($country, "id", "Unknown"); ?>)</h5>
             <div class="card-text">
                 <ul class="list-group">
                     <li class="list-group-item">Name: <?php se($country, "name", "Unknown"); ?></li>
@@ -16,12 +21,13 @@ if (!isset($country)) {
                 </ul>
 
             </div>
+            
             <?php if (!isset($country["user_id"]) && isset($country["id"])) : ?>
                 <div class="card-body">
                     <a href="<?php echo get_url('api/purchase_country.php?user_id=&country_id=' . $country["id"]); ?>" class="card-link">Purchase Country</a>
                 </div>
             <?php endif; ?>
-            
+
         </div>
     </div>
 <?php endif; ?>
