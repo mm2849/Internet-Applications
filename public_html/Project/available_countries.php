@@ -20,10 +20,10 @@ $form = [
 
 ];
 
-$total_records = get_total_count("`Countries` b LEFT JOIN `UserCountries` ub on b.id = ub.country_id");
+$total_records = get_total_count("`Countries` b WHERE b.id NOT IN (SELECT country_id FROM `UserCountries`)");
 
-$query = "SELECT u.username, b.id, name , code, code2, name, localname, continent, region, indepyear, surfacearea, governmentform, is_api FROM `Countries` b
-LEFT JOIN `UserCountries` ub ON b.id = ub.country_id LEFT JOIN Users u on u.id = ub.user_id WHERE 1=1";
+$query = "SELECT b.id, name , code, code2, name, localname, continent, region, indepyear, surfacearea, governmentform, is_api FROM `Countries` b
+WHERE b.id NOT IN (SELECT country_id FROM `UserCountries`) ";
 $params = [];
 if (count($_GET) > 0) {
     $keys = array_keys($_GET);
@@ -94,7 +94,7 @@ $table = ["data" => $results, "title" => "Countries", "ignored_columns" => ["id"
 
 
 <div class="container-fluid">
-    <h3>List Countries</h3>
+    <h3>Available Countries</h3>
     <form method="GET">
         <div class="row mb-3" style="align-items: flex-end;">
 

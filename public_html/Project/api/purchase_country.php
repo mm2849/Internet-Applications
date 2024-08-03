@@ -19,6 +19,7 @@ if(isset($_GET["user_id"]) && is_logged_in()){
     error_log("GET data: " . var_export($_GET, true));
     $stmt->execute([":user_id"=>get_user_id(), ":country_id"=>$_GET["country_id"]]);
     flash("CONGRADUALTIONS ON PURCHASING A COUNTRY!!!", "success");
+    redirect("my_countries.php");
     }
     catch(PDOException $e){
         if($e->errorInfo[1] === 1062){
@@ -33,4 +34,4 @@ if(isset($_GET["user_id"]) && is_logged_in()){
 }
 
 //die(header("Location: " . get_url("countries.php")));
-redirect("countries.php");
+redirect("my_countries.php");
