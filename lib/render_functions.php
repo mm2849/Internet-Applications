@@ -14,3 +14,9 @@ function render_table($data = array())
 {
     include(__DIR__ . "/../partials/table.php");
 }
+
+function render_country_card($country = array()){
+
+    include(__DIR__ . "/../partials/country_card.php");
+}
+

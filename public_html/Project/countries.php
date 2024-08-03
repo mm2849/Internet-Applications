@@ -1,14 +1,8 @@
 <?php
 //mm2849
-//07/27/2024
 //note we need to go up 1 more directory
-require(__DIR__ . "/../../../partials/nav.php");
+require(__DIR__ . "/../../partials/nav.php");
 
-if (!has_role("Admin")) {
-    flash("You don't have permission to view this page", "warning");
-    //die(header("Location: $BASE_PATH" . "/home.php"));
-    redirect("home.php");
-}
 
 
 //Building Search Form
@@ -28,12 +22,12 @@ $form = [
 
 
 
-//mm2849
-//07/27/2024
-$query = "SELECT id, name , code, code2, name, localname, continent, region, indepyear, surfacearea, governmentform, is_api FROM `Countries` WHERE 1=1";
+$query = "SELECT b.id, name , code, code2, name, localname, continent, region, indepyear, surfacearea, governmentform, is_api FROM `Countries` b
+LEFT JOIN `UserCountries` ub ON b.id = ub.country_id WHERE 1=1";
 $params = [];
 if (count($_GET) > 0) {
     $keys = array_keys($_GET);
+    //redirect($session_key);
 
     foreach ($form as $k => $v) {
         if (in_array($v["name"], $keys)) {
@@ -55,9 +49,7 @@ if (count($_GET) > 0) {
         $query .= " AND continent like :continent";
         $params[":continent"] = "%$continent%";
     }
-//mm2849
-//07/27/2024
-
+  
     $sort = se($_GET, "sort", "indepyear", false);
     if (!in_array($sort, ["name", "localname", "continent"])) {
         $sort = "indepyear";
@@ -79,8 +71,7 @@ if (count($_GET) > 0) {
     $query .= " LIMIT $limit";
 }
 
-//mm2849
-//7/27/2024
+
 $db = getDB();
 $stmt = $db->prepare($query);
 $results = [];
@@ -95,28 +86,38 @@ try {
     flash("Unhandled error occurred", "danger");
 }
 
-$table = ["data" => $results, "title" => "Countries", "ignored_columns" => ["id"], "edit_url" => get_url("admin/edit_country.php?id="), "delete_url"=>get_url("admin/delete_country.php?id="), "view_url" => get_url("admin/view_country.php")];
+$table = ["data" => $results, "title" => "Countries", "ignored_columns" => ["id"], "edit_url" => get_url("admin/edit_country.php?id="), "delete_url" => get_url("admin/delete_country.php?id="), "view_url" => get_url("admin/view_country.php")];
 
 
 ?>
+
+
+
 <div class="container-fluid">
     <h3>List Countries</h3>
     <form method="GET">
-        <div class="row">
+        <div class="row mb-3" style="align-items: flex-end;">
 
             <?php foreach ($form as $k => $v) : ?>
-                <div class="col-3">
+                <div class="col">
                     <?php render_input($v); ?>
                 </div>
             <?php endforeach; ?>
-            <?php render_button(["text" => "Search", "type" => "submit", "text" => "Filter"]); ?>
-            <a href="?" class="btn btn-secondary">Clear</a>
+
+        </div>
+        <?php render_button(["text" => "Search", "type" => "submit", "text" => "Filter"]); ?>
+        <a href="?clear" class="btn btn-secondary">Clear</a>
     </form>
-    <?php render_table($table); ?>
+    <div class="row w-100 row-cols-auto row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4">
+        <?php foreach ($results as $country) : ?>
+            <div class="col">
+                <?php render_country_card($country); ?>
+            </div>
+        <?php endforeach; ?>
+    </div>
 </div>
 
 
 <?php
-//note we need to go up 1 more directory
-require_once(__DIR__ . "/../../../partials/flash.php");
+require_once(__DIR__ . "/../../partials/flash.php");
 ?>
