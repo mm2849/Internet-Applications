@@ -112,7 +112,7 @@ try {
     flash("Unhandled error occurred", "danger");
 }
 
-$table = ["data" => $results, "title" => "Countries", "ignored_columns" => ["id"], "edit_url" => get_url("admin/edit_country.php?id="), "delete_url" => get_url("admin/delete_country.php?id="), "view_url" => get_url("admin/view_country.php")];
+$table = ["data" => $results,"delete_url" => get_url("admin/delete_country.php?id=")];
 
 
 ?>
@@ -134,6 +134,7 @@ $table = ["data" => $results, "title" => "Countries", "ignored_columns" => ["id"
         <?php render_button(["text" => "Search", "type" => "submit", "text" => "Filter"]); ?>
         <a href="?clear" class="btn btn-secondary">Clear</a>
     </form>
+    <?php render_table($table); ?>
     <?php render_result_counts(count($results), $total_records); ?>
     <div class="row w-100 row-cols-auto row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4">
         <?php foreach ($results as $country) : ?>

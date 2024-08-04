@@ -41,8 +41,8 @@ WHERE user_id = :user_id", [":user_id" => get_user_id()]);
 
 //mm2849
 //07/27/2024
-$query = "SELECT b.id, name , code, code2, name, localname, continent, region, indepyear, surfacearea, governmentform, is_api, user_id FROM `Countries` b
-JOIN `UserCountries` ub ON b.id = ub.country_id
+$query = "SELECT username, b.id, name , code, code2, name, localname, continent, region, indepyear, surfacearea, governmentform, is_api, user_id FROM `Countries` b
+JOIN `UserCountries` ub ON b.id = ub.country_id LEFT JOIN Users u ON u.id = ub.user_id
 WHERE user_id = :user_id";
 $params = [":user_id" => get_user_id()];
 if (count($_GET) > 0) {

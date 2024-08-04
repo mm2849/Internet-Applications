@@ -17,6 +17,7 @@ if ($id < 1) {
 }
 
 
+
 $db = getDB();
 $query = "DELETE FROM `Countries` WHERE id = :id";
 try {

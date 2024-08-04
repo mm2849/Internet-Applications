@@ -71,6 +71,7 @@ session_start();
                             <li><a class="dropdown-item" href="<?php echo get_url('admin/create_trip.php'); ?>">Search & Create Country</a></li>
                             <li><a class="dropdown-item" href="<?php echo get_url('admin/list_country.php'); ?>">List Country</a></li>
                             <li><a class="dropdown-item" href="<?php echo get_url('admin/country_associations.php'); ?>">Country Association</a></li>
+                            <li><a class="dropdown-item" href="<?php echo get_url('admin/assign_country_user.php'); ?>">Assign Country</a></li>
                             
                         </ul>
                     </li>
