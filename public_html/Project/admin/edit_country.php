@@ -75,6 +75,8 @@ if ($id > -1) {
     //die(header("Location:" . get_url("admin/list_country.php")));
     redirect("admin/list_country.php");
 }
+
+
 if ($country) {
     $form = [
         ["type" => "text", "name" => "code", "placeholder" => "Country Code", "label" => "Country Code", "rules" => ["required" => "required"]],
