@@ -6,7 +6,8 @@ require(__DIR__ . "/../../../partials/nav.php");
 
 if (!has_role("Admin")) {
     flash("You don't have permission to view this page", "warning");
-    die(header("Location: $BASE_PATH" . "/home.php"));
+    //die(header("Location: $BASE_PATH" . "/home.php"));
+    redirect("home.php");
 }
 
 
@@ -21,11 +22,10 @@ $form = [
 
     ["type" => "number", "name" => "limit", "label" => "Limit", "Value" => "10", "include_margin" => false],
 
-
-
 ];
+error_log("Form data: " . var_export($form, true));
 
-
+$total_records = get_total_count("`Countries`");
 
 //mm2849
 //07/27/2024
@@ -54,8 +54,8 @@ if (count($_GET) > 0) {
         $query .= " AND continent like :continent";
         $params[":continent"] = "%$continent%";
     }
-//mm2849
-//07/27/2024
+    //mm2849
+    //07/27/2024
 
     $sort = se($_GET, "sort", "indepyear", false);
     if (!in_array($sort, ["name", "localname", "continent"])) {
@@ -94,7 +94,9 @@ try {
     flash("Unhandled error occurred", "danger");
 }
 
-$table = ["data" => $results, "title" => "Countries", "ignored_columns" => ["id"], "edit_url" => get_url("admin/edit_country.php"), "delete_url"=>get_url("admin/delete_country.php")];
+$table = ["data" => $results, "title" => "Countries", "ignored_columns" => ["id"], "edit_url" => get_url("admin/edit_country.php?"), "delete_url" => get_url("admin/delete_country.php?"), "view_url" => get_url("admin/view_country.php")];
+
+
 ?>
 <div class="container-fluid">
     <h3>List Countries</h3>
@@ -109,6 +111,7 @@ $table = ["data" => $results, "title" => "Countries", "ignored_columns" => ["id"
             <?php render_button(["text" => "Search", "type" => "submit", "text" => "Filter"]); ?>
             <a href="?" class="btn btn-secondary">Clear</a>
     </form>
+    <?php render_result_counts(count($results), $total_records); ?>
     <?php render_table($table); ?>
 </div>
 
