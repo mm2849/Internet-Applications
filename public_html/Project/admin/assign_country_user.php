@@ -1,5 +1,7 @@
 <?php
 //note we need to go up 1 more directory
+//mm2849
+//08/04/2024
 require(__DIR__ . "/../../../partials/nav.php");
 
 if (!has_role("Admin")) {
@@ -31,6 +33,7 @@ if (isset($_POST["users"]) && isset($_POST["countries"])) {
         }
     }
 }
+
 
 //get active countries
 $active_countries = [];
@@ -71,6 +74,7 @@ if (isset($_POST["username"])) {
         flash("Username must not be empty", "warning");
     }
 }
+
 
 ?>
 <div class="container-fluid">

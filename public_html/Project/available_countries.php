@@ -1,5 +1,6 @@
 <?php
 //mm2849
+//08/04/2024
 //note we need to go up 1 more directory
 require(__DIR__ . "/../../partials/nav.php");
 
@@ -19,7 +20,8 @@ $form = [
 
 
 ];
-
+//mm2849
+//08/04/2024
 $total_records = get_total_count("`Countries` b WHERE b.id NOT IN (SELECT country_id FROM `UserCountries`)");
 
 $query = "SELECT b.id, name , code, code2, name, localname, continent, region, indepyear, surfacearea, governmentform, is_api FROM `Countries` b
@@ -49,7 +51,7 @@ if (count($_GET) > 0) {
         $query .= " AND continent like :continent";
         $params[":continent"] = "%$continent%";
     }
-  
+
     $sort = se($_GET, "sort", "indepyear", false);
     if (!in_array($sort, ["name", "localname", "continent"])) {
         $sort = "indepyear";
@@ -58,7 +60,8 @@ if (count($_GET) > 0) {
     if (!in_array($order, ["asc", "desc"])) {
         $order = "desc";
     }
-
+    //mm2849
+    //08/04/2024
     $query .= " ORDER BY $sort $order";
     try {
         $limit = (int)se($_GET, "limit", "10", false);
@@ -87,6 +90,7 @@ try {
 }
 
 $table = ["data" => $results, "title" => "Countries", "ignored_columns" => ["id"], "edit_url" => get_url("admin/edit_country.php?id="), "delete_url" => get_url("admin/delete_country.php?id="), "view_url" => get_url("admin/view_country.php")];
+
 
 
 ?>

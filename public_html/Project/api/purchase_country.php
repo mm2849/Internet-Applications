@@ -5,10 +5,8 @@
 require(__DIR__ . "/../../../lib/functions.php");
 session_start();
 
-echo "<pre>"; 
-var_dump($_GET);
-echo "</pre>";
-
+//mm2849
+//08/4/2024
 if(isset($_GET["user_id"]) && is_logged_in()){
     //Implementing some purchasing logic
     $db = getDB();

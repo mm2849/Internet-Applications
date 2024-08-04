@@ -1,6 +1,6 @@
 <?php
 //mm2849
-//07/27/2024
+//08/04/2024
 //note we need to go up 1 more directory
 require(__DIR__ . "/../../partials/nav.php");
 
@@ -35,12 +35,12 @@ $form = [
 
 ];
 
+
 $total_records = get_total_count("`Countries` b
 JOIN `UserCountries` ub ON b.id = ub.country_id
 WHERE user_id = :user_id", [":user_id" => get_user_id()]);
 
-//mm2849
-//07/27/2024
+
 $query = "SELECT username, b.id, name , code, code2, name, localname, continent, region, indepyear, surfacearea, governmentform, is_api, user_id FROM `Countries` b
 JOIN `UserCountries` ub ON b.id = ub.country_id LEFT JOIN Users u ON u.id = ub.user_id
 WHERE user_id = :user_id";
@@ -69,8 +69,6 @@ if (count($_GET) > 0) {
         $query .= " AND continent like :continent";
         $params[":continent"] = "%$continent%";
     }
-    //mm2849
-    //07/27/2024
 
     $sort = se($_GET, "sort", "indepyear", false);
     if (!in_array($sort, ["name", "localname", "continent"])) {
@@ -85,7 +83,9 @@ if (count($_GET) > 0) {
     if (!in_array($order, ["asc", "desc"])) {
         $order = "desc";
     }
-
+    
+    //mm2849
+    //08/04/2024
     $query .= " ORDER BY $sort $order";
     try {
         $limit = (int)se($_GET, "limit", "10", false);
@@ -98,8 +98,6 @@ if (count($_GET) > 0) {
     $query .= " LIMIT $limit";
 }
 
-//mm2849
-//7/27/2024
 
 $stmt = $db->prepare($query);
 $results = [];
@@ -116,7 +114,8 @@ try {
 
 $table = ["data" => $results, "title" => "Countries", "ignored_columns" => ["id"], "edit_url" => get_url("admin/edit_country.php?id="), "delete_url" => get_url("admin/delete_country.php?id="), "view_url" => get_url("admin/view_country.php")];
 
-
+//mm2849
+//08/04/2024
 ?>
 
 
